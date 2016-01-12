@@ -6,18 +6,15 @@ import subprocess
 PREP_SCRIPT_NAME = "wsprepare.py"
 SLEEP_TIME = 1 # Time in seconds to sleep after a command, mouse move or key press.
 
-SNAP_MAPS = {"left": "alt+left",
-             "right": "alt+right",
-             "top": "alt+up",
-             "bottom": "alt+down",
+SNAP_MAPS = {"left": "alt+Left",
+             "right": "alt+Right",
+             "top": "alt+Up",
+             "bottom": "alt+Down",
              "top-left": "shift+alt+f1",
              "bottom-left": "shift+alt+f2",
              "top-right": "shift+alt+f3",
              "bottom-right": "shift+alt+f4"
              }
-
-def action_sleep():
-    time.sleep(SLEEP_TIME)
 
 def exit_with_error(error_msg):
     sys.stderr.write("ERROR: %s\n" % error_msg)
@@ -43,6 +40,7 @@ def type_in_enter(to_type):
     send_keys("Return")
 
 def run_command(to_run):
+    print("Sending command: %s" % to_run)
     split_command = to_run.split(" ")
 
     assert len(split_command) >= 1
@@ -52,16 +50,8 @@ def run_command(to_run):
     else:
         subprocess.call(split_command)
 
+    time.sleep(SLEEP_TIME)
+
 def snap_window(place):
     assert place in SNAP_MAPS.keys()
-
-if __name__ == "__main__":
-    # Verify that prepare script exists
-    if not os.path.isfile(PREP_SCRIPT_NAME):
-        exit_with_error("%s not found." % PREP_SCRIPT_NAME)
-
-    cwd = os.getcwd()
-
-    input("Close all unnecessary windows in this workspace then press RETURN to begin workspace setup.")
-
-    eval("import %s" % PREP_SCRIPT_NAME)
+    send_keys(place)
