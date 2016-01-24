@@ -1,59 +1,62 @@
 WORK_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export WORK_PATH
 
+SLEEP_TIME=0.5
+
 # Takes in two integers representing x and y coordinate.
 function mouse_move() {
 xdotool mousemove $1 $2
-sleep 0.1
+sleep $SLEEP_TIME
 }
 
 function init() {
+xdotool type "cd ${WORK_PATH}"; xdotool key "Return"; 
+sleep $SLEEP_TIME
+}
+
+function activate_venv() {
+
 if [ ! -d "venv" ]; then
     echo "ERROR: venv not found. Did you run init_env yet?"
     exit 1
 fi
 
-xdotool type "cd ${WORK_PATH}"; xdotool key "Return"; xdotool type "source venv/bin/activate"; xdotool key "Return"
-sleep 0.1
+xdotool type "source venv/bin/activate"; xdotool key "Return"
+
 }
 
 function goto_workpath() {
 cd ${WORK_PATH}
-sleep 0.1
+sleep $SLEEP_TIME
 
 }
 
 function create_tab() {
 xdotool key "ctrl+shift+t"   
 init
-goto_workpath
-sleep 0.1
-
-}
-
-function create_terminal() {
-xdotool key "ctrl+alt+t"   
-init
-goto_workpath
-sleep 0.1
+sleep $SLEEP_TIME
 
 }
 
 function next_tab() {
 xdotool key "ctrl+Page_Down"   
-sleep 0.1
+sleep $SLEEP_TIME
+}
+
+function run_command() {
+xdotool type $1; xdotool key "Return"
 
 }
 
-mouse_move 0 0
-create_terminal
-
 # Server
-python server.py
+create_tab
+activate_venv
+run_command "./server.py"
 
 # Guard
 create_tab
-guard
+activate_venv
+run_command "guard"
 
 # Return to server
 next_tab
