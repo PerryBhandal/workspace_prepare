@@ -44,19 +44,15 @@ sleep $SLEEP_TIME
 }
 
 function run_command() {
-xdotool type $1; xdotool key "Return"
+xdotool type "$1"; xdotool key "Return"
 
 }
 
 # Server
-create_tab
 activate_venv
-run_command "./server.py"
+run_command "python server.py"
 
 # Guard
 create_tab
 activate_venv
 run_command "guard"
-
-# Return to server
-next_tab
