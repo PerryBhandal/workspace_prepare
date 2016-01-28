@@ -1,5 +1,5 @@
 # Source the wsp functions
-source /home/perry/.scripts/wsp_functions.sh
+source /home/perry/.scripts/workspace_prepare/wsp_example.sh
 
 ## Function overview:
 # mouse_move x y
